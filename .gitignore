@@ -4,3 +4,11 @@ node_modules
 ## enviroment variables
 .env
 .env.local
+
+## archivos especificos
+mysql/
+dist/
+build/
+coverage/
+src/generated/prisma/
+*.log
