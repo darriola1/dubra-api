@@ -13,7 +13,7 @@ afterAll((done) => {
 });
 
 describe("GET /", () => {
-  it("debería responder con el mensaje de bienvenida", async () => {
+  test("debería responder con el mensaje de bienvenida", async () => {
     const res = await request(server).get("/");
     expect(res.statusCode).toBe(200);
     expect(res.text).toBe("🚀 Dubra API funcionando correctamente");

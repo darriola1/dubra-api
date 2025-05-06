@@ -12,12 +12,16 @@ Está desarrollado con Node.js + Express usando Clean Architecture, TypeScript y
 src/
 ├── app/
 │   └── server.ts          # Punto de entrada y configuración principal
-.env                       # Configuraciones de entorno
+└── tests/                 # Carpeta para guardar los archivos de test
+|   └── server.test.ts     # Ejemplo
 prisma/
 └── schema.prisma          # Modelo de datos y migraciones
-Dockerfile
-docker-compose.yml
+.env                       # Configuraciones de entorno
 tsconfig.json
+package.json
+package-lock.json
+jest.config.ts
+README.md
 ```
 
 ---
@@ -39,30 +43,37 @@ npm install
 
 ## 🛈 Instala los siguientes dependencias, listadas a medida que se fue construyendo la API
 
-```bash
-# 1. Instala dependencias
-npm install express                        # Framework web principal (routing, middlewares)
-npm install --save-dev typescript          # Compilador TypeScript
-npm install --save-dev tsx                 # Para ejecutar TS sin compilar (modo dev)
-npm install --save-dev @types/express      # Tipos para Express
-npm install --save-dev @types/node         # Tipos para Node.js
-npm install dotenv                         # Cargar variables desde .env
+| Paso | Comando                                                     | Descripción                                                |
+| ---- | ----------------------------------------------------------- | ---------------------------------------------------------- |
+| 1    | `npm install express`                                       | Framework web principal (routing, middlewares)             |
+|      | `npm install --save-dev typescript`                         | Compilador TypeScript                                      |
+|      | `npm install --save-dev tsx`                                | Ejecutar TS sin compilar (modo desarrollo)                 |
+|      | `npm install --save-dev @types/express`                     | Tipos para Express                                         |
+|      | `npm install --save-dev @types/node`                        | Tipos para Node.js                                         |
+|      | `npm install dotenv`                                        | Cargar variables desde `.env`                              |
+| -    | -                                                           | -                                                          |
+| 2    | `npm install --save-dev prisma`                             | CLI de Prisma para desarrollo                              |
+|      | `npm install @prisma/client`                                | Cliente Prisma para producción                             |
+|      | `npx prisma init`                                           | Crea `prisma/schema.prisma` y `.env`                       |
+| -    | -                                                           | -                                                          |
+| 3    | `npm install bcryptjs`                                      | Hash de contraseñas                                        |
+|      | `npm install jsonwebtoken`                                  | Autenticación con JWT                                      |
+|      | `npm install @types/jsonwebtoken`                           | Tipado para JWT                                            |
+|      | `npm install zod`                                           | Validaciones de datos                                      |
+| -    | -                                                           | -                                                          |
+| 4    | `npm install --save-dev jest @types/jest ts-jest supertest` | Testing con Jest, tipado y test de endpoints con Supertest |
+|      | `npm install --save-dev ts-node`                            | Requerido por Jest al ejecutar TS directamente             |
+|      | `npm install --save-dev cross-env`                          | Para ejecutar test sin modificar el entorno de node        |
 
-# 2. Instalar Prisma y cliente
-npm install prisma --save-dev       # Paquete principal en modo desarrollo
-npm install @prisma/client          # Cliente Prisma para producción
-npx prisma init                     # Crea prisma/schema.prisma y .env
+---
 
-# 3. Utilidades
-npm install bcryptjs                # Hash de contraseñas
-npm install jsonwebtoken            # JWT para auth
-npm install @types/jsonwebtoken     # Tipado para JWT
-npm install zod                     # Validaciones
+## 🧪 Para ejecutar los test
 
-# 4. Dependecias de testing
-npm install -D jest @types/jest ts-jest supertest # Jest+Supertest y tipado
-npm install -D ts-node # Dependecia para jest. Da error si no esta instalado
-```
+| Comando                 | Descripción                                                                 |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `npm run test`          | Ejecuta todos los tests una sola vez usando Jest.                           |
+| `npm run test:watch`    | Ejecuta los tests y vuelve a correrlos automáticamente al detectar cambios. |
+| `npm run test:coverage` | Ejecuta los tests y muestra un reporte de cobertura del código (coverage).  |
 
 ---
 
@@ -101,7 +112,7 @@ docker-compose up --build
 
 | Comando                     | Descripción                                   |
 | --------------------------- | --------------------------------------------- |
-| `npx prisma init`           | Crea `schema.prisma` y `.env`                 |
+| `npx prisma init`           | Crea `schema.prisma` y `.env` si no existe    |
 | `npx prisma db push`        | Aplica el esquema a la DB **sin migraciones** |
 | `npx prisma migrate dev`    | Crea y aplica una migración (entorno dev)     |
 | `npx prisma migrate reset`  | Resetea la DB y corre migraciones             |
