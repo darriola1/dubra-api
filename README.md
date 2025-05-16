@@ -26,6 +26,17 @@ README.md
 
 ---
 
+## 🧱 Arquitectura en capas (resumido)
+
+| Comando           | Descripción                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `domain/`         | Reglas de negocio puras (entidades, repositorios, use-cases) |
+| `infrastructure/` | Prisma, Express, controladores, rutas, DB                    |
+| `application/`    | Casos de uso aplicando lógica                                |
+| `shared/`         | Utilidades genéricas (hash, errores, etc.)                   |
+
+---
+
 ## 🚀 Instalación Rápida
 
 Clonar el repositorio
