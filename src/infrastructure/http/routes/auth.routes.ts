@@ -6,5 +6,7 @@ const authController = new AuthController();
 
 // Ruta para registrar usuario
 router.post('/register', (req, res) => authController.register(req, res));
+// Ruta para el login
+router.post('/login', (req, res) => authController.login(req, res));
 
 export default router;

@@ -15,7 +15,7 @@ src/
 ├── application/                    # Casos de uso
 │   └── use-cases/
 │       └── register-user.use-case.ts
-├── domain/                         # Entidades, DTOs y contratos
+├── domain/                         # Entidades, DTOs y repositorios
 │   ├── dtos/
 │   │   └── user.dto.ts
 │   ├── entities/
