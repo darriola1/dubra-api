@@ -12,7 +12,7 @@ export class AuthController {
     //res es el objeto que vamos a devolver como respuesta
     //req.body es el cuerpo de la peticion y donde vienen los datos
     //Aca desestructuramos el body para obtener los datos que necesitamos
-    console.log('req.body', req)
+    // console.log('req.body', req)
     const { name, email, password } = req.body;
 
     try {

@@ -14,7 +14,7 @@ app.disable('x-powered-by');
 
 
 app.get("/", (_req, res) => {
-  res.send("🚀 Dubra API funcionando correctamente");
+  res.send(`🚀 Dubra API funcionando correctamente ${PORT}`);
 });
 
 // Ruta base para autenticación
