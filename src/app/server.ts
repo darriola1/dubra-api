@@ -1,6 +1,7 @@
 // imports de paquetes
 import express, { json } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 // imports de codigo
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 // cargamos las vairables de entorno
@@ -8,6 +9,11 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.APP_PORT || 3003;
+
+app.use(cors({
+  origin: 'http://localhost:3001',
+  credentials: true, 
+}));
 
 app.use(json());
 // Se deshabilita el header 'x-powered-by' por "seguridad".

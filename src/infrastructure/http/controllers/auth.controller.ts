@@ -3,6 +3,7 @@ import { RegisterUserUseCase } from '@/application/use-cases/register-user.use-c
 import { LoginUserUseCase } from '@/application/use-cases/login-user.use-case';
 import { UserDatasource } from '@/infrastructure/data/prisma/user.datasource';
 import { CustomError } from '@/shared/utils/custom.error';
+import { reCAPTCHA } from '@/shared/utils/recaptcha';
 
 const userRepo = new UserDatasource();
 const registerUser = new RegisterUserUseCase(userRepo);
@@ -15,7 +16,12 @@ export class AuthController {
 		//req.body es el cuerpo de la peticion y donde vienen los datos
 		//Aca desestructuramos el body para obtener los datos que necesitamos
 		// console.log('req.body', req)
-		const { name, email, password } = req.body;
+		const { name, email, password, recaptchaToken } = req.body;
+
+		const isHuman = await reCAPTCHA(recaptchaToken);
+		if (!isHuman) {
+        	return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
+      	}
 
 		try {
 			//ejecutamos el caso de uso de registro de usuario
@@ -40,7 +46,12 @@ export class AuthController {
 		//req.body es el cuerpo de la peticion y donde vienen los datos
 		//Aca desestructuramos el body para obtener los datos que necesitamos
 		// console.log('req.body', req)
-		const { email, password } = req.body;
+		const { email, password, recaptchaToken } = req.body;
+
+		const isHuman = await reCAPTCHA(recaptchaToken);
+		if (!isHuman) {
+        	return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
+      	}
 
 		try {
 			const result = await loginUser.login({ email, password });
