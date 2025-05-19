@@ -19,3 +19,22 @@ export interface UserDTO {
   createdAt: Date | string;
   updatedAt: Date | string;
 }
+
+export interface LoginUserDTO {
+  // interface para el login
+  // input → lo que el cliente te manda
+  email: string;
+  password: string;
+}
+
+export interface AuthResponseDTO {
+  // interface para la respuesta de autenticacion
+  // output → lo que le devolvés
+  token: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
+}
+

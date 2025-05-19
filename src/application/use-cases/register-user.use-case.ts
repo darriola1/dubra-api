@@ -9,7 +9,7 @@ export class RegisterUserUseCase {
    * Constructor del caso de uso de registro de usuario.
    * @param userRepo Repositorio de usuarios para interactuar con la base de datos.
    */
-  constructor(private readonly userRepo: UserRepository) {}
+  constructor(private readonly userRepo: UserRepository) { }
 
   async create(user: CreateUserDTO): Promise<UserEntity> {
     const { email, name, password } = user;
@@ -27,7 +27,7 @@ export class RegisterUserUseCase {
     const newUser: UserDTO = await this.userRepo.create({
       email,
       name,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     // 4. Lo convertimos a una entidad del dominio
