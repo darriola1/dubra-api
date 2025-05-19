@@ -16,13 +16,12 @@ export class AuthController {
 		//Aca desestructuramos el body para obtener los datos que necesitamos
 		// console.log('req.body', req)
 		const { name, email, password, recaptchaToken } = req.body;
-
-		const isHuman = await reCAPTCHA(recaptchaToken);
-		if (!isHuman) {
-        	return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
-      	}
-
 		try {
+			// const isHuman = await reCAPTCHA(recaptchaToken);
+			// if (!isHuman) {
+			// 	return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
+			// }
+
 			//ejecutamos el caso de uso de registro de usuario
 			const user = await registerUser.create({ name, email, password });
 			res.status(201).json({
@@ -48,12 +47,12 @@ export class AuthController {
 		// console.log('req.body', req)
 		const { email, password, recaptchaToken } = req.body;
 
-		const isHuman = await reCAPTCHA(recaptchaToken);
-		if (!isHuman) {
-        	return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
-      	}
-
 		try {
+			// const isHuman = await reCAPTCHA(recaptchaToken);
+			// if (!isHuman) {
+			// 	return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
+			// }
+
 			const result = await loginUser.login({ email, password });
 
 			res.status(200).json({
