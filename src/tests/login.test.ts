@@ -14,28 +14,12 @@ describe('POST /auth/login', () => {
 		});
 
 		expect(res.statusCode).toBe(200);
-		expect(res.body).toHaveProperty('id');
-		expect(res.body).toHaveProperty('name', 'Test User');
-		expect(res.body).toHaveProperty('email');
-		expect(res.body).not.toHaveProperty('password');
+		expect(res.body).toHaveProperty('token');
+		expect(res.body).toHaveProperty('user.id');
+		expect(res.body).toHaveProperty('user.name', 'Denis');
+		expect(res.body).toHaveProperty('user.email');
+		expect(res.body).toHaveProperty('token');
 	});
 
-	// test('should return 400 if email is already in use', async () => {
-	// 	const email = `duplicate${Date.now()}@dubra.com`;
-
-	// 	await request(app).post('/auth/register').send({
-	// 		name: 'Existing',
-	// 		email,
-	// 		password: '123456',
-	// 	});
-
-	// 	const res = await request(app).post('/auth/register').send({
-	// 		name: 'Existing Again',
-	// 		email,
-	// 		password: '123456',
-	// 	});
-
-	// 	expect(res.statusCode).toBe(400);
-	// 	expect(res.body).toHaveProperty('error', 'Email is already in use');
-	// });
+	// AGREGAR MAS TEST. EJEMPLO SI USUARIO NO EXISTE. SI LA CONTRASELA ES INCORRECTA
 });

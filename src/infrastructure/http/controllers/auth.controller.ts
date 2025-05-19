@@ -5,11 +5,10 @@ import { UserDatasource } from '@/infrastructure/data/prisma/user.datasource';
 import { CustomError } from '@/shared/utils/custom.error';
 
 const userRepo = new UserDatasource();
-const registerUser = new RegisterUserUseCase(userRepo);
-const loginUser = new LoginUserUseCase(userRepo);
 
 export class AuthController {
 	async register(req: Request, res: Response) {
+		const registerUser = new RegisterUserUseCase(userRepo);
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta
 		//req.body es el cuerpo de la peticion y donde vienen los datos
@@ -35,6 +34,7 @@ export class AuthController {
 	}
 
 	async login(req: Request, res: Response) {
+		const loginUser = new LoginUserUseCase(userRepo);
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta
 		//req.body es el cuerpo de la peticion y donde vienen los datos
