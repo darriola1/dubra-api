@@ -10,19 +10,59 @@ Está desarrollado con Node.js + Express usando Clean Architecture, TypeScript y
 
 ```
 src/
-├── app/
-│   └── server.ts          # Punto de entrada y configuración principal
-└── tests/                 # Carpeta para guardar los archivos de test
-|   └── server.test.ts     # Ejemplo
+├── app/                            # Punto de entrada (Express)
+│   └── server.ts
+├── application/                    # Casos de uso
+│   └── use-cases/
+│       └── register-user.use-case.ts
+├── domain/                         # Entidades, DTOs y repositorios
+│   ├── dtos/
+│   │   └── user.dto.ts
+│   ├── entities/
+│   │   └── user.entity.ts
+│   └── repositories/
+│       └── user.repository.ts
+├── infrastructure/
+│   ├── data/
+│   │   └── prisma/
+│   │       └── user.datasource.ts
+│   └── http/
+│       ├── controllers/
+│       │   └── auth.controller.ts
+│       └── routes/
+│           └── auth.routes.ts
+├── shared/
+│   ├── middlewares/
+│   └── utils/
+│       ├── hash.ts
+│       └── custom.error.ts
+├── tests/
+│   ├── register.test.ts
+│   └── server.test.ts
 prisma/
-└── schema.prisma          # Modelo de datos y migraciones
-.env                       # Configuraciones de entorno
+└── schema.prisma
+.env
+.env.template
+.gitignore
+jest.config.ts
 tsconfig.json
+tsconfig.paths.json
 package.json
 package-lock.json
-jest.config.ts
 README.md
+LICENSE
 ```
+
+---
+
+## 🧱 Arquitectura en capas (resumido)
+
+| Comando           | Descripción                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `domain/`         | Reglas de negocio puras (entidades, repositorios, use-cases) |
+| `infrastructure/` | Prisma, Express, controladores, rutas, DB                    |
+| `application/`    | Casos de uso aplicando lógica                                |
+| `shared/`         | Utilidades genéricas (hash, errores, etc.)                   |
 
 ---
 

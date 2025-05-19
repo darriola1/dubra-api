@@ -17,16 +17,16 @@ datasource db {
 model Usuario {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-  nombre    String
-  password  String   // Hasheada
+  name      String
+  password  String // Hasheada
   pedidos   Pedido[] // Relación con los pedidos
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Pedido {
-  id         Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   descripcion String
-  usuarioId  Int
-  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int
+  usuario     Usuario @relation(fields: [usuarioId], references: [id])
 }
