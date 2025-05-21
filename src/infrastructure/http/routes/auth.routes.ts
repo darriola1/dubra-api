@@ -8,5 +8,7 @@ const authController = new AuthController();
 router.post('/register', (req, res) => authController.register(req, res));
 // Ruta para el login
 router.post('/login', (req, res) => authController.login(req, res));
+// Route to change password
+router.post('/change-password', (req, res)=> authController.changePassword(req, res))
 
 export default router;

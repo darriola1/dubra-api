@@ -38,3 +38,9 @@ export interface AuthResponseDTO {
   };
 }
 
+export interface ChangePasswordDTO{
+  newPassword: string;
+  email: string;
+  password: string;
+}
+
