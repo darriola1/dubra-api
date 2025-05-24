@@ -4,9 +4,11 @@ import { AuthController } from '../controllers/auth.controller';
 const router = Router();
 const authController = new AuthController();
 
-// Ruta para registrar usuario
+// Route to register user
 router.post('/register', (req, res) => authController.register(req, res));
-// Ruta para el login
+// Route to login
 router.post('/login', (req, res) => authController.login(req, res));
+// Route to change password
+router.post('/change-password', (req, res) => authController.changePassword(req, res));
 
 export default router;

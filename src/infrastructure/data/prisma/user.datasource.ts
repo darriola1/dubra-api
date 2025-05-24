@@ -1,4 +1,4 @@
-import { PrismaClient} from '@/generated/prisma/client'
+import { PrismaClient } from '@/generated/prisma/client';
 import { UserRepository } from '@/domain/repositories/user.repository';
 import { CreateUserDTO, UserDTO } from '@/domain/dtos/user.dto';
 
@@ -23,5 +23,12 @@ export class UserDatasource implements UserRepository {
 		return await prisma.usuario.findUnique({
 			where: { email },
 		});
+	}
+
+	async changePassword(email: string, newPassword: string): Promise<UserDTO>{
+		return await prisma.usuario.update({
+			where: { email },
+			data: {password: newPassword},
+		})
 	}
 }

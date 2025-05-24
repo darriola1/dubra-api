@@ -6,4 +6,5 @@ export interface UserRepository {
 	// UserDTO es el DTO que se devuelve al crear o buscar un usuario
 	create(data: CreateUserDTO): Promise<UserDTO>;
 	findByEmail(email: string): Promise<UserDTO | null>;
+	changePassword(email: string, newPassword: string): Promise<UserDTO>;
 }
