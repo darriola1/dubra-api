@@ -71,7 +71,8 @@ export class AuthController {
 		}
 	}
 
-	async changePassword(req: Request, res: Response){
+	async changePassword(req: Request, res: Response) {
+		console.log('Entro al Change password');
 		const changePasswordUser = new ChangePasswordUserUseCase(userRepo);
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta
@@ -80,23 +81,22 @@ export class AuthController {
 		const { email, password, newPassword, recaptchaToken } = req.body;
 
 		try {
-			const isHuman = await reCAPTCHA(recaptchaToken);
-			if (!isHuman) {
-				throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
-			}
+			// const isHuman = await reCAPTCHA(recaptchaToken);
+			// if (!isHuman) {
+			// 	throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
+			// }
 
-			const result = await changePasswordUser.changePassword({email, password, newPassword});
+			const result = await changePasswordUser.changePassword({ email, password, newPassword });
+			console.log('result', result);
 
 			res.status(200).json({
-				
-			})
-
-		} catch (error){
+				message: 'Password updated successfully',
+			});
+		} catch (error) {
 			const message = error instanceof CustomError ? error.message : 'Unexpected error';
 			const status = error instanceof CustomError ? error.statusCode : 500;
 
 			res.status(status).json({ error: message });
 		}
-
 	}
 }
