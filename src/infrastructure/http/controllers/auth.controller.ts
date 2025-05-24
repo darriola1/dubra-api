@@ -72,7 +72,7 @@ export class AuthController {
 	}
 
 	async changePassword(req: Request, res: Response) {
-		console.log('Entro al Change password');
+		// console.log('Entro al Change password');
 		const changePasswordUser = new ChangePasswordUserUseCase(userRepo);
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta

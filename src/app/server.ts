@@ -4,16 +4,19 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 // imports de codigo
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
+import userRoutes from '@/infrastructure/http/routes/user.routes';
 // cargamos las vairables de entorno
 dotenv.config();
 
 const app = express();
 const PORT = process.env.APP_PORT || 3003;
 
-app.use(cors({
-  origin: 'http://localhost:3001',
-  credentials: true, 
-}));
+app.use(
+	cors({
+		origin: 'http://localhost:3001',
+		credentials: true,
+	})
+);
 
 app.use(json());
 // Se deshabilita el header 'x-powered-by' por "seguridad".
@@ -25,6 +28,7 @@ app.get('/', (_req, res) => {
 
 // Ruta base para autenticación
 app.use('/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Solo escuchá si no estás en test
 if (process.env.NODE_ENV !== 'test') {
