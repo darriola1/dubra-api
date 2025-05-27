@@ -2,6 +2,7 @@
 import express, { json } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 // imports de codigo
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 import userRoutes from '@/infrastructure/http/routes/user.routes';
@@ -19,6 +20,8 @@ app.use(
 );
 
 app.use(json());
+ //habilit en express la lectura de cookies 
+app.use(cookieParser());
 // Se deshabilita el header 'x-powered-by' por "seguridad".
 app.disable('x-powered-by');
 

@@ -8,7 +8,9 @@ export const getMeController = (req: Request, res: Response): void => {
 	}
 
 	res.status(200).json({
+		user: {
 		id: req.user.id,
 		email: req.user.email,
+		},
 	});
 };

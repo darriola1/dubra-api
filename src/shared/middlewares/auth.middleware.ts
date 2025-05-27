@@ -13,13 +13,12 @@ declare global {
 }
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-	const authHeader = req.headers.authorization;
+  	// Primero intentamos obtener el token desde la cookie
+  	const token = req.cookies?.token
+    
+	// Si no está en la cookie, intentamos desde el header (opcional, mientras estamos en desarrollo)
+    || (req.headers.authorization?.startsWith('Bearer ') ? req.headers.authorization.split(' ')[1] : null);
 
-	if (!authHeader) {
-		throw CustomError.unauthorized('Authorization header is missing');
-	}
-
-	const token = authHeader.split(' ')[1];
 	if (!token) {
 		throw CustomError.unauthorized('Token is missing');
 	}
