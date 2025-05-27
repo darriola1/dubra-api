@@ -2,6 +2,12 @@ import request from 'supertest';
 import express from 'express';
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 
+// se mockea la funcion reCAPTCHA para que siempre devuelva `true` durante los tests.
+// Jest reemplaza la función original por simulacion (`jest.fn().mockResolvedValue(true)`) y esto evita llamadas reales al servicio de google reCAPTCHA y permite testear sin depender de tokens válidos.
+jest.mock('@/shared/utils/recaptcha', () => ({
+  reCAPTCHA: jest.fn().mockResolvedValue(true)
+}));
+
 const app = express();
 app.use(express.json());
 app.use('/auth', authRoutes);
@@ -13,7 +19,8 @@ describe('POST /auth/register', () => {
       .send({
         name: 'Test User',
         email: `test${Date.now()}@dubra.com`,
-        password: '123456'
+        password: '123456',
+        recaptchaToken: 'fake-token'
       });
 
     expect(res.statusCode).toBe(201);
@@ -29,13 +36,15 @@ describe('POST /auth/register', () => {
     await request(app).post('/auth/register').send({
       name: 'Existing',
       email,
-      password: '123456'
+      password: '123456',
+      recaptchaToken: 'fake-token'
     });
 
     const res = await request(app).post('/auth/register').send({
       name: 'Existing Again',
       email,
-      password: '123456'
+      password: '123456',
+      recaptchaToken: 'fake-token'
     });
 
     expect(res.statusCode).toBe(400);
