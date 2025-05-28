@@ -20,7 +20,7 @@ export class ChangePasswordUserUseCase {
 
 		const isMatch = await comparePassword(newPassword, user.password);
 		if (isMatch) {
-			throw CustomError.unauthorized('New password should not be the same as old password');
+			throw CustomError.badRequest('New password should not be the same as old password');
 		}
 
 		const hashedPassword = await hashPassword(newPassword);

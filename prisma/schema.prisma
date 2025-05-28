@@ -18,6 +18,8 @@ model Usuario {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String
+  empresaId Int?
+  Empresa   Empresa? @relation(fields: [empresaId], references: [id])
   password  String // Hasheada
   pedidos   Pedido[] // Relación con los pedidos
   createdAt DateTime @default(now())
@@ -29,4 +31,14 @@ model Pedido {
   descripcion String
   usuarioId   Int
   usuario     Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model Empresa {
+  id              Int       @id @default(autoincrement())
+  nombre_fantasia String    @unique
+  razon_social    String    @unique
+  RUT             String    @unique
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  usuarios        Usuario[] // Relación con los usuarios
 }

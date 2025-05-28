@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Dubra API
+  version: 1.0.0
+  description: API para gestión de envíos, pedidos y autenticación
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+
+paths:
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Registro de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@example.com
+                password:
+                  type: string
+                  example: password123
+                name:
+                  type: string
+                  example: Juan Pérez
+      responses:
+        '201':
+          description: Usuario creado correctamente
+        '400':
+          description: Error en la solicitud
+
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@example.com
+                password:
+                  type: string
+                  example: password123
+      responses:
+        '200':
+          description: Login exitoso
+        '401':
+          description: Credenciales inválidas
+
+  /api/auth/change-password:
+    post:
+      tags:
+        - Auth
+      summary: Cambio de contraseña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@example.com
+                currentPassword:
+                  type: string
+                  example: oldPassword123
+                newPassword:
+                  type: string
+                  example: newPassword456
+      responses:
+        '200':
+          description: Contraseña cambiada correctamente
+        '401':
+          description: Credenciales incorrectas

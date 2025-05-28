@@ -40,7 +40,9 @@ export const verifyToken = (token: string): JwtPayload => {
 	}
 	// 3. Verificamos el token
 	try {
-		return jwt.verify(token, JWT_SECRET) as JwtPayload;
+		const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+		console.log('decoded', decoded);
+		return decoded;
 	} catch (error) {
 		throw CustomError.unauthorized('Invalid or expired token');
 	}
