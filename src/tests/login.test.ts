@@ -15,6 +15,8 @@ async function createTestUser() {
 		name: `Test ${dinamicUser}`,
 		email: `test${dinamicUser}@dubra.com`,
 		password: '@AAAaaa111',
+		confirmPassword: '@AAAaaa111',
+    	rut: '123456789012', 
 		recaptchaToken: 'fake-token'
 	};
 
@@ -41,8 +43,7 @@ describe('POST /auth/login', () => {
 		expect(res.body).toHaveProperty('user.id');
 		expect(res.body).toHaveProperty('user.name');
 		expect(res.body).toHaveProperty('user.email');
-
-		//Cpmo el token viene en una cookie lo extraemos de ahi y no del body.
+		//Cpmo el token viene en una cookie se extrae de ahi y no del body.
 		const cookies = res.headers['set-cookie'];
 		expect(cookies).toBeDefined();
 		expect(cookies[0]).toMatch(/token=/);
@@ -71,4 +72,36 @@ describe('POST /auth/login', () => {
 		expect(res.statusCode).toBe(401); 
 		expect(res.body).toHaveProperty('error', 'Invalid credentials');
 	});
+
+	test('should return 400 if email is missing', async () => {
+		const res = await request(app).post('/auth/login').send({
+			password: '@AAAaaa111',
+			recaptchaToken: 'fake-token',
+		});
+
+		expect(res.statusCode).toBe(400);
+		expect(res.body.errors).toHaveProperty('email');
+	});
+
+	test('should return 400 if password is missing', async () => {
+		const res = await request(app).post('/auth/login').send({
+			email: 'test@dubra.com',
+			recaptchaToken: 'fake-token',
+		});
+
+		expect(res.statusCode).toBe(400);
+		expect(res.body.errors).toHaveProperty('password');
+	});
+
+	test('should return 400 if password is too short', async () => {
+		const res = await request(app).post('/auth/login').send({
+			email: 'test@dubra.com',
+			password: '123',
+			recaptchaToken: 'fake-token',
+		});
+
+		expect(res.statusCode).toBe(400);
+		expect(res.body.errors).toHaveProperty('password');
+	});
 });
+
