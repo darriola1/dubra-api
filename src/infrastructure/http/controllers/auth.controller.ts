@@ -17,10 +17,13 @@ export class AuthController {
 		//Aca desestructuramos el body para obtener los datos que necesitamos
 		// console.log('req.body', req)
 		const { name, email, password, recaptchaToken } = req.body;
+		const isDev = process.env.NODE_ENV === 'development';
 		try {
-			const isHuman = await reCAPTCHA(recaptchaToken);
-			if (!isHuman) {
-				throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
+			if (!isDev) {
+				const isHuman = await reCAPTCHA(recaptchaToken);
+				if (!isHuman) {
+					throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
+				}
 			}
 
 			//ejecutamos el caso de uso de registro de usuario
@@ -47,29 +50,30 @@ export class AuthController {
 		//Aca desestructuramos el body para obtener los datos que necesitamos
 		// console.log('req.body', req)
 		const { email, password, recaptchaToken } = req.body;
-
+		const isDev = process.env.NODE_ENV === 'development';
 		try {
-		    const isHuman = await reCAPTCHA(recaptchaToken);
-			if (!isHuman) {
-				throw CustomError.badRequest('reCAPTCHA verification failed');
+			if (!isDev) {
+				const isHuman = await reCAPTCHA(recaptchaToken);
+				if (!isHuman) {
+					throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
+				}
 			}
-
 			//Se ejecuta el caso de login, donde se valida el usuario y se genera el token
 			const result = await loginUser.login({ email, password });
 
 			res
-			//se configura la cookie con el token de una manera segura. 
-			// pbtenemos el token del resultado del caso de uso previo
-			.cookie('token', result.token, {
-				httpOnly: true, //hace que la cookie no sea accesible desde js
-				secure: process.env.NODE_ENV === 'production', // cookies por HTTPS si es production y HTTP si es desarrollo
-				sameSite: 'strict', //ayuda a prevenir ataques CSRF, previene que se envíe la cookie en solicitudes de otros sitios
-				maxAge: 24 * 60 * 60 * 1000, // 1 dia, se puede modificar 
-			})
-			.status(200)
-			.json({
-				user: result.user,
-			});
+				//se configura la cookie con el token de una manera segura.
+				// pbtenemos el token del resultado del caso de uso previo
+				.cookie('token', result.token, {
+					httpOnly: true, //hace que la cookie no sea accesible desde js
+					secure: process.env.NODE_ENV === 'production', // cookies por HTTPS si es production y HTTP si es desarrollo
+					sameSite: 'strict', //ayuda a prevenir ataques CSRF, previene que se envíe la cookie en solicitudes de otros sitios
+					maxAge: 24 * 60 * 60 * 1000, // 1 dia, se puede modificar
+				})
+				.status(200)
+				.json({
+					user: result.user,
+				});
 		} catch (error) {
 			const message = error instanceof CustomError ? error.message : 'Unexpected error';
 			const status = error instanceof CustomError ? error.statusCode : 500;
@@ -90,7 +94,7 @@ export class AuthController {
 		try {
 			const isHuman = await reCAPTCHA(recaptchaToken);
 			if (!isHuman) {
-			 	throw CustomError.badRequest('reCAPTCHA verification failed');
+				throw CustomError.badRequest('reCAPTCHA verification failed');
 			}
 
 			const result = await changePasswordUser.changePassword({ email, password, newPassword });

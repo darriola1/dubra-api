@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 export const getMeController = (req: Request, res: Response): void => {
-	console.log('Llego al controller', 'getMeController');
 	if (!req.user) {
 		res.status(401).json({ message: 'No autorizado' });
 		return;
@@ -9,8 +8,8 @@ export const getMeController = (req: Request, res: Response): void => {
 
 	res.status(200).json({
 		user: {
-		id: req.user.id,
-		email: req.user.email,
+			id: req.user.id,
+			email: req.user.email,
 		},
 	});
 };
