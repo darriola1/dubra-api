@@ -1,12 +1,18 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller';
+import { validateBody } from '../../../shared/middlewares/zod.middleware';
+import { RegisterUserSchema, LoginUserSchema, ChangePasswordSchema } from '../../../domain/dtos/user.schema';
 
 const router = Router();
 const authController = new AuthController();
 
-// Ruta para registrar usuario
-router.post('/register', (req, res) => authController.register(req, res));
-// Ruta para el login
-router.post('/login', (req, res) => authController.login(req, res));
+// Route to register user with validation
+router.post('/register', validateBody(RegisterUserSchema), (req, res) => authController.register(req, res));
+// Route to login with validation
+router.post('/login', validateBody(LoginUserSchema), (req, res) => authController.login(req, res));
+// Route to change password with validation
+router.post('/change-password', validateBody(ChangePasswordSchema), (req, res) => authController.changePassword(req, res));
+// Route to logout
+router.post('/logout', (req, res) => authController.logout(req, res));
 
 export default router;
