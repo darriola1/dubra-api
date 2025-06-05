@@ -2,11 +2,14 @@
 	"name": "dubra-api",
 	"version": "1.0.0",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"dev": "tsx --watch src/app/server.ts",
 		"test": "cross-env NODE_ENV=test jest",
 		"test:watch": "cross-env NODE_ENV=test jest --watch",
-		"test:coverage": "cross-env NODE_ENV=test jest --coverage"
+		"test:coverage": "cross-env NODE_ENV=test jest --coverage",
+		"build": "tsup src/app/server.ts --out-dir dist --format cjs --minify --clean --dts",
+		"start": "node dist/server.cjs"
 	},
 	"repository": {
 		"type": "git",
@@ -44,6 +47,7 @@
 		"supertest": "^7.1.0",
 		"ts-jest": "^29.3.2",
 		"ts-node": "^10.9.2",
+		"tsup": "^8.5.0",
 		"tsx": "^4.19.4",
 		"typescript": "^5.8.3"
 	}
