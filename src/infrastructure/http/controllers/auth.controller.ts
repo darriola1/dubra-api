@@ -17,12 +17,14 @@ export class AuthController {
 		//Aca desestructuramos el body para obtener los datos que necesitamos
 		// console.log('req.body', req)
 		const { name, email, password, recaptchaToken } = req.body;
+		const isDev = process.env.NODE_ENV === 'development';
 		try {
-			// const isHuman = await reCAPTCHA(recaptchaToken);
-			// if (!isHuman) {
-			// 	throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
-			// 	// return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
-			// }
+			if (!isDev) {
+				const isHuman = await reCAPTCHA(recaptchaToken);
+				if (!isHuman) {
+					throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
+				}
+			}
 
 			//ejecutamos el caso de uso de registro de usuario
 			const user = await registerUser.create({ name, email, password });
@@ -48,21 +50,30 @@ export class AuthController {
 		//Aca desestructuramos el body para obtener los datos que necesitamos
 		// console.log('req.body', req)
 		const { email, password, recaptchaToken } = req.body;
-
+		const isDev = process.env.NODE_ENV === 'development';
 		try {
-			// const isHuman = await reCAPTCHA(recaptchaToken);
-			// if (!isHuman) {
-			// 	throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
-
-			// 	// return res.status(400).json({ error: 'Falló la verificación de reCAPTCHA' });
-			// }
-
+			if (!isDev) {
+				const isHuman = await reCAPTCHA(recaptchaToken);
+				if (!isHuman) {
+					throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
+				}
+			}
+			//Se ejecuta el caso de login, donde se valida el usuario y se genera el token
 			const result = await loginUser.login({ email, password });
 
-			res.status(200).json({
-				token: result.token,
-				user: result.user,
-			});
+			res
+				//se configura la cookie con el token de una manera segura.
+				// pbtenemos el token del resultado del caso de uso previo
+				.cookie('token', result.token, {
+					httpOnly: true, //hace que la cookie no sea accesible desde js
+					secure: process.env.NODE_ENV === 'production', // cookies por HTTPS si es production y HTTP si es desarrollo
+					sameSite: 'strict', //ayuda a prevenir ataques CSRF, previene que se envíe la cookie en solicitudes de otros sitios
+					maxAge: 24 * 60 * 60 * 1000, // 1 dia, se puede modificar
+				})
+				.status(200)
+				.json({
+					user: result.user,
+				});
 		} catch (error) {
 			const message = error instanceof CustomError ? error.message : 'Unexpected error';
 			const status = error instanceof CustomError ? error.statusCode : 500;
@@ -72,7 +83,7 @@ export class AuthController {
 	}
 
 	async changePassword(req: Request, res: Response) {
-		console.log('Entro al Change password');
+		// console.log('Entro al Change password');
 		const changePasswordUser = new ChangePasswordUserUseCase(userRepo);
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta
@@ -81,10 +92,10 @@ export class AuthController {
 		const { email, password, newPassword, recaptchaToken } = req.body;
 
 		try {
-			// const isHuman = await reCAPTCHA(recaptchaToken);
-			// if (!isHuman) {
-			// 	throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
-			// }
+			const isHuman = await reCAPTCHA(recaptchaToken);
+			if (!isHuman) {
+				throw CustomError.badRequest('reCAPTCHA verification failed');
+			}
 
 			const result = await changePasswordUser.changePassword({ email, password, newPassword });
 			console.log('result', result);
@@ -98,5 +109,27 @@ export class AuthController {
 
 			res.status(status).json({ error: message });
 		}
+	}
+
+	me(req: Request, res: Response) {
+		try {
+			if (!req.user) {
+				throw CustomError.unauthorized('Unauthorized');
+			}
+			res.status(200).json({ user: req.user });
+		} catch (error) {
+			const message = error instanceof CustomError ? error.message : 'Unexpected error';
+			const status = error instanceof CustomError ? error.statusCode : 500;
+			res.status(status).json({ error: message });
+		}
+	}
+
+	logout(_req: Request, res: Response) {
+		res.clearCookie('token', {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: 'strict',
+		});
+		res.status(200).json({ message: 'Session closed successfully' });
 	}
 }
