@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { RegisterUserUseCase } from '@/application/use-cases/register-user.use-case';
-import { LoginUserUseCase } from '@/application/use-cases/login-user.use-case';
+import { RegisterUserUseCase } from '@/application/use-cases/user/register-user.use-case';
+import { LoginUserUseCase } from '@/application/use-cases/user/login-user.use-case';
 import { UserDatasource } from '@/infrastructure/data/prisma/user.datasource';
 import { CustomError } from '@/shared/utils/custom.error';
 import { reCAPTCHA } from '@/shared/utils/recaptcha';
-import { ChangePasswordUserUseCase } from '@/application/use-cases/change-password-user.use-case';
+import { ChangePasswordUserUseCase } from '@/application/use-cases/user/change-password-user.use-case';
 
 const userRepo = new UserDatasource();
 

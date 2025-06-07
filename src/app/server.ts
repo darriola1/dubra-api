@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 // imports de codigo
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 import userRoutes from '@/infrastructure/http/routes/user.routes';
+import ordersRouter from "@/infrastructure/http/routes/order.routes";
+
 // cargamos las vairables de entorno
 dotenv.config();
 
@@ -32,6 +34,7 @@ app.get('/', (_req, res) => {
 // Ruta base para autenticación
 app.use('/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use("/orders", ordersRouter);
 
 // Solo escuchá si no estás en test
 if (process.env.NODE_ENV !== 'test') {

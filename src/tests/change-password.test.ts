@@ -1,4 +1,4 @@
-import { ChangePasswordUserUseCase } from '@/application/use-cases/change-password-user.use-case';
+import { ChangePasswordUserUseCase } from '@/application/use-cases/user/change-password-user.use-case';
 import { UserRepository } from '@/domain/repositories/user.repository';
 import { UserDTO } from '@/domain/dtos/user.dto';
 import { comparePassword, hashPassword } from '@/shared/utils/hash';

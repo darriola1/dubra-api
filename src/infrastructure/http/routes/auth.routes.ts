@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller';
 import { validateBody } from '../../../shared/middlewares/zod.middleware';
-import { RegisterUserSchema, LoginUserSchema, ChangePasswordSchema } from '../../../domain/dtos/user.schema';
+import { RegisterUserSchema, LoginUserSchema, ChangePasswordSchema } from '../../../application/schemas/user.schema';
 
 const router = Router();
 const authController = new AuthController();
