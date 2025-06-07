@@ -1,11 +1,11 @@
-export interface CreatePedidoDTO {
+export interface CreateOrderDTO {
   descripcion: string;
   pickupAddress: string;
   dropoffAddress: string;
   usuarioId: number;
   status: "pendiente" | "en_camino" | "entregado" | "cancelado";
 }
-export interface UpdatePedidoDTO {
+export interface UpdateOrderDTO {
   descripcion?: string;
   status?: "pendiente" | "en_camino" | "entregado" | "cancelado";
 }

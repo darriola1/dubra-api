@@ -1,10 +1,10 @@
-import { PedidoRepository } from "@/domain/repositories/order.repository";
-import { CreatePedidoDTO } from "@/domain/dtos/order.dto";
+import { OrderRepository } from "@/domain/repositories/order.repository";
+import { CreateOrderDTO } from "@/domain/dtos/order.dto";
 
-export class CreatePedidoUseCase {
-	constructor(private readonly pedidoRepo: PedidoRepository) {}
+export class CreateOrderUseCase {
+	constructor(private readonly orderRepo: OrderRepository) {}
 
-	async execute(data: CreatePedidoDTO) {
-		return this.pedidoRepo.create(data);
+	async execute(data: CreateOrderDTO) {
+		return this.orderRepo.create(data);
 	}
 }

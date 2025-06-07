@@ -1,53 +1,53 @@
 import { Request, Response } from "express";
-import { orderschema, PedidoUpdateSchema } from "../../../application/schemas/order.schema";
-import { PedidoDatasource } from "../../data/prisma/order.datasource";
+import { orderschema, OrderUpdateSchema } from "../../../application/schemas/order.schema";
+import { OrderDatasource } from "../../data/prisma/order.datasource";
 
 // Importación de los use cases
-import { CreatePedidoUseCase } from "../../../application/use-cases/order/create-order.use-case";
-import { FindAllPedidosUseCase } from "../../../application/use-cases/order/find-all-orders.use-case";
-import { FindPedidoByIdUseCase } from "../../../application/use-cases/order/find-order-by-id.use-case";
-import { UpdatePedidoUseCase } from "../../../application/use-cases/order/update-order.use-case";
-import { DeletePedidoUseCase } from "../../../application/use-cases/order/delete-order.use-case";
+import { CreateOrderUseCase } from "../../../application/use-cases/order/create-order.use-case";
+import { FindAllOrdersUseCase } from "../../../application/use-cases/order/find-all-orders.use-case";
+import { FindOrderByIdUseCase } from "../../../application/use-cases/order/find-order-by-id.use-case";
+import { UpdateOrderUseCase } from "../../../application/use-cases/order/update-order.use-case";
+import { DeleteOrderUseCase } from "../../../application/use-cases/order/delete-order.use-case";
 
-const pedidoRepo = new PedidoDatasource();
+const orderRepo = new OrderDatasource();
 
-export class PedidoController {
+export class OrderController {
   async create(req: Request, res: Response) {
     const parsed = orderschema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json(parsed.error.flatten());
 
-    const useCase = new CreatePedidoUseCase(pedidoRepo);
-    const pedido = await useCase.execute(parsed.data);
-    res.status(201).json(pedido);
+    const useCase = new CreateOrderUseCase(orderRepo);
+    const order = await useCase.execute(parsed.data);
+    res.status(201).json(order);
   }
 
   async findAll(req: Request, res: Response) {
-    const useCase = new FindAllPedidosUseCase(pedidoRepo);
-    const pedidos = await useCase.execute();
-    res.json(pedidos);
+    const useCase = new FindAllOrdersUseCase(orderRepo);
+    const orders = await useCase.execute();
+    res.json(orders);
   }
 
   async findById(req: Request, res: Response) {
     const id = parseInt(req.params.id);
-    const useCase = new FindPedidoByIdUseCase(pedidoRepo);
-    const pedido = await useCase.execute(id);
-    if (!pedido) return res.status(404).json({ error: "Pedido no encontrado" });
-    res.json(pedido);
+    const useCase = new FindOrderByIdUseCase(orderRepo);
+    const order = await useCase.execute(id);
+    if (!order) return res.status(404).json({ error: "Order no encontrado" });
+    res.json(order);
   }
 
   async upgrade(req: Request, res: Response) {
     const id = parseInt(req.params.id);
-    const parsed = PedidoUpdateSchema.safeParse(req.body);
+    const parsed = OrderUpdateSchema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json(parsed.error.flatten());
 
-    const useCase = new UpdatePedidoUseCase(pedidoRepo);
-    const pedido = await useCase.execute(id, parsed.data);
-    res.json(pedido);
+    const useCase = new UpdateOrderUseCase(orderRepo);
+    const order = await useCase.execute(id, parsed.data);
+    res.json(order);
   }
 
   async delete(req: Request, res: Response) {
     const id = parseInt(req.params.id);
-    const useCase = new DeletePedidoUseCase(pedidoRepo);
+    const useCase = new DeleteOrderUseCase(orderRepo);
     await useCase.execute(id);
     res.status(204).send();
   }

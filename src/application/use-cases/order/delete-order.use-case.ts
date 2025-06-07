@@ -1,9 +1,9 @@
-import { PedidoRepository } from "../../../domain/repositories/order.repository";
+import { OrderRepository } from "../../../domain/repositories/order.repository";
 
-export class DeletePedidoUseCase {
-  constructor(private readonly pedidoRepo: PedidoRepository) {}
+export class DeleteOrderUseCase {
+  constructor(private readonly orderRepo: OrderRepository) {}
 
   async execute(id: number) {
-    return this.pedidoRepo.delete(id);
+    return this.orderRepo.delete(id);
   }
 }

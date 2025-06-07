@@ -1,10 +1,10 @@
-import { PedidoRepository } from "../../../domain/repositories/order.repository";
-import { UpdatePedidoDTO } from "../../../domain/dtos/order.dto";
+import { OrderRepository } from "../../../domain/repositories/order.repository";
+import { UpdateOrderDTO } from "../../../domain/dtos/order.dto";
 
-export class UpdatePedidoUseCase {
-  constructor(private readonly pedidoRepo: PedidoRepository) {}
+export class UpdateOrderUseCase {
+  constructor(private readonly orderRepo: OrderRepository) {}
 
-  async execute(id: number, data: UpdatePedidoDTO) {
-    return this.pedidoRepo.update(id, data);
+  async execute(id: number, data: UpdateOrderDTO) {
+    return this.orderRepo.update(id, data);
   }
 }

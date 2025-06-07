@@ -19,24 +19,24 @@ model Usuario {
   email     String   @unique
   name      String
   password  String // Hasheada
-  orders    Pedido[] // Relación con los orders
+  orders    Order[] // Relación con los orders
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Pedido {
+model Order {
   id             Int           @id @default(autoincrement())
   descripcion    String
   pickupAddress  String
   dropoffAddress String
   usuarioId      Int
   usuario        Usuario       @relation(fields: [usuarioId], references: [id])
-  status         EstadoPedido
+  status         OrderStatus
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 }
 
-enum EstadoPedido {
+enum OrderStatus {
   pendiente
   en_camino
   entregado

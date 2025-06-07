@@ -8,7 +8,7 @@ export const orderschema = z.object({
   status: z.enum(["pendiente", "en_camino", "entregado", "cancelado"]),
 });
 
-export const PedidoUpdateSchema = orderschema.partial();
+export const OrderUpdateSchema = orderschema.partial();
 
-export type PedidoInput = z.infer<typeof orderschema>;
-export type PedidoUpdateInput = z.infer<typeof PedidoUpdateSchema>;
+export type OrderInput = z.infer<typeof orderschema>;
+export type OrderUpdateInput = z.infer<typeof OrderUpdateSchema>;
