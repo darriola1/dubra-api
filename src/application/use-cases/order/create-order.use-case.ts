@@ -4,7 +4,7 @@ import { CreateOrderDTO } from "@/domain/dtos/order.dto";
 export class CreateOrderUseCase {
 	constructor(private readonly orderRepo: OrderRepository) {}
 
-	async execute(data: CreateOrderDTO) {
+	async create(data: CreateOrderDTO) {
 		return this.orderRepo.create(data);
 	}
 }

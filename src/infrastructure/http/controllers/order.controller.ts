@@ -17,38 +17,38 @@ export class OrderController {
     if (!parsed.success) return res.status(400).json(parsed.error.flatten());
 
     const useCase = new CreateOrderUseCase(orderRepo);
-    const order = await useCase.execute(parsed.data);
+    const order = await useCase.create(parsed.data);
     res.status(201).json(order);
   }
 
   async findAll(req: Request, res: Response) {
     const useCase = new FindAllOrdersUseCase(orderRepo);
-    const orders = await useCase.execute();
+    const orders = await useCase.findAll();
     res.json(orders);
   }
 
   async findById(req: Request, res: Response) {
     const id = parseInt(req.params.id);
     const useCase = new FindOrderByIdUseCase(orderRepo);
-    const order = await useCase.execute(id);
+    const order = await useCase.findBy(id);
     if (!order) return res.status(404).json({ error: "Order no encontrado" });
     res.json(order);
   }
 
-  async upgrade(req: Request, res: Response) {
+  async update(req: Request, res: Response) {
     const id = parseInt(req.params.id);
     const parsed = OrderUpdateSchema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json(parsed.error.flatten());
 
     const useCase = new UpdateOrderUseCase(orderRepo);
-    const order = await useCase.execute(id, parsed.data);
+    const order = await useCase.update(id, parsed.data);
     res.json(order);
   }
 
   async delete(req: Request, res: Response) {
     const id = parseInt(req.params.id);
     const useCase = new DeleteOrderUseCase(orderRepo);
-    await useCase.execute(id);
+    await useCase.delete(id);
     res.status(204).send();
   }
 }

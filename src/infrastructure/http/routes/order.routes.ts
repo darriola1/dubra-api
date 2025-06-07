@@ -1,22 +1,22 @@
 import { Router } from "express";
-import { PedidoController } from "../controllers/order.controller";
+import { OrderController } from "../controllers/order.controller";
 
 const router = Router();
-const pedidoController = new PedidoController();
+const orderController = new OrderController();
 
 router.post("/", async (req, res, next) => {
     try {
-        await pedidoController.create(req, res);
+        await orderController.create(req, res);
     } catch (error) {
         next(error);
     }
 });
 
-router.get("/", (req, res) => pedidoController.findAll(req, res));
+router.get("/", (req, res) => orderController.findAll(req, res));
 
 router.get("/:id", async (req, res, next) => {
     try {
-        await pedidoController.findById(req, res);
+        await orderController.findById(req, res);
     } catch (error) {
         next(error);
     }
@@ -24,12 +24,12 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
     try {
-        await pedidoController.upgrade(req, res);
+        await orderController.update(req, res);
     } catch (error) {
         next(error);
     }
 });
 
-router.delete("/:id", (req, res) => pedidoController.delete(req, res));
+router.delete("/:id", (req, res) => orderController.delete(req, res));
 
 export default router;
