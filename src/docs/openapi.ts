@@ -8,7 +8,6 @@ import {
 const PORT = process.env.APP_PORT || 3003;
 const registry = new OpenAPIRegistry();
 
-// Registra tus esquemas
 registry.register('RegisterUser', RegisterUserSchema);
 registry.register('LoginUser', LoginUserSchema);
 registry.register('ChangePassword', ChangePasswordSchema);
@@ -34,7 +33,6 @@ registry.registerPath({
   },
 });
 
-// Otras rutas de autenticación
 registry.registerPath({
   method: 'post',
   path: '/auth/login',
@@ -85,7 +83,7 @@ registry.registerPath({
       required: true,
       content: {
         'application/json': {
-          schema: {},  // Define el schema correspondiente aquí
+          schema: {}, 
         },
       },
     },
@@ -96,7 +94,6 @@ registry.registerPath({
   },
 });
 
-// Otras rutas de órdenes
 registry.registerPath({
   method: 'get',
   path: '/orders',
@@ -126,7 +123,7 @@ registry.registerPath({
       required: true,
       content: {
         'application/json': {
-          schema: {},  // Define el schema correspondiente aquí
+          schema: {}, 
         },
       },
     },
