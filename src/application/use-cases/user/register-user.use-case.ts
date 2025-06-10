@@ -1,8 +1,8 @@
-import { UserRepository } from '../../domain/repositories/user.repository';
-import { CreateUserDTO, UserDTO } from '../../domain/dtos/user.dto';
-import { UserEntity } from '../../domain/entities/user.entity';
-import { hashPassword } from '../../shared/utils/hash';
-import { CustomError } from '../../shared/utils/custom.error';
+import { UserRepository } from '../../../domain/repositories/user.repository';
+import { CreateUserDTO, UserDTO } from '../../../domain/dtos/user.dto';
+import { UserEntity } from '../../../domain/entities/user.entity';
+import { hashPassword } from '../../../shared/utils/hash';
+import { CustomError } from '../../../shared/utils/custom.error';
 
 export class RegisterUserUseCase {
   /**
