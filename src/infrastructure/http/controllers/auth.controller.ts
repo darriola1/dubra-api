@@ -5,6 +5,7 @@ import { UserDatasource } from '@/infrastructure/data/prisma/user.datasource';
 import { CustomError } from '@/shared/utils/custom.error';
 import { reCAPTCHA } from '@/shared/utils/recaptcha';
 import { ChangePasswordUserUseCase } from '@/application/use-cases/user/change-password-user.use-case';
+import { logger } from '@/shared/utils/logger';
 
 const userRepo = new UserDatasource();
 
@@ -28,6 +29,7 @@ export class AuthController {
 
 			//ejecutamos el caso de uso de registro de usuario
 			const user = await registerUser.create({ name, email, password });
+			logger.info(`Usuario registrado: ${user.id} - ${user.email}`);
 			res.status(201).json({
 				id: user.id,
 				name: user.name,
@@ -35,6 +37,7 @@ export class AuthController {
 				createdAt: user.createdAt,
 			});
 		} catch (error) {
+			logger.error('Error en el registro de usuario:', error);
 			const message = error instanceof CustomError ? error.message : 'Unexpected error';
 			const status = error instanceof CustomError ? error.statusCode : 500;
 
@@ -60,7 +63,7 @@ export class AuthController {
 			}
 			//Se ejecuta el caso de login, donde se valida el usuario y se genera el token
 			const result = await loginUser.login({ email, password });
-
+			logger.info(`Inicio sesion: ${result.user.id} - ${result.user.email}`);
 			res
 				//se configura la cookie con el token de una manera segura.
 				// pbtenemos el token del resultado del caso de uso previo
@@ -75,6 +78,7 @@ export class AuthController {
 					user: result.user,
 				});
 		} catch (error) {
+			logger.error('Error en el registro de usuario:', error);
 			const message = error instanceof CustomError ? error.message : 'Unexpected error';
 			const status = error instanceof CustomError ? error.statusCode : 500;
 
@@ -98,12 +102,13 @@ export class AuthController {
 			}
 
 			const result = await changePasswordUser.changePassword({ email, password, newPassword });
-			console.log('result', result);
-
+			// console.log('result', result);
+			logger.info(`Usuario actualizo su contraseña: ${result.user.id} - ${result.user.email}`);
 			res.status(200).json({
 				message: 'Password updated successfully',
 			});
 		} catch (error) {
+			logger.error('Error en el registro de usuario:', error);
 			const message = error instanceof CustomError ? error.message : 'Unexpected error';
 			const status = error instanceof CustomError ? error.statusCode : 500;
 
@@ -124,12 +129,27 @@ export class AuthController {
 		}
 	}
 
+	// logout(_req: Request, res: Response) {
+	// 	res.clearCookie('token', {
+	// 		httpOnly: true,
+	// 		secure: process.env.NODE_ENV === 'production',
+	// 		sameSite: 'strict',
+	// 	});
+	// 	res.status(200).json({ message: 'Session closed successfully' });
+	// }
 	logout(_req: Request, res: Response) {
-		res.clearCookie('token', {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'strict',
-		});
-		res.status(200).json({ message: 'Session closed successfully' });
+		try {
+			res.clearCookie('token', {
+				httpOnly: true,
+				secure: process.env.NODE_ENV === 'production',
+				sameSite: 'strict',
+			});
+			logger.info(`Usuario cerro su sesion`);
+			res.status(200).json({ message: 'Session closed successfully' });
+		} catch (error) {
+			logger.error(`Error en el cierre de session: ${error}`);
+			// console.error('Error during logout:', error);
+			res.status(500).json({ message: 'An error occurred while logging out' });
+		}
 	}
 }
