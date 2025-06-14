@@ -9,6 +9,7 @@ import { logger } from '@/shared/utils/logger';
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 import userRoutes from '@/infrastructure/http/routes/user.routes';
 import ordersRouter from '@/infrastructure/http/routes/order.routes';
+import { errorHandler } from '@/shared/middlewares/error.middleware';
 
 import swaggerUi from 'swagger-ui-express';
 import { openApiDocument } from '../docs/openapi';
@@ -41,6 +42,7 @@ app.use('/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/orders', ordersRouter);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
+app.use(errorHandler);
 
 // Solo escuchá si no estás en test
 if (process.env.NODE_ENV !== 'test') {

@@ -1,17 +1,19 @@
 import { Request, Response } from 'express';
 import { RegisterUserUseCase } from '@/application/use-cases/user/register-user.use-case';
 import { LoginUserUseCase } from '@/application/use-cases/user/login-user.use-case';
-import { UserDatasource } from '@/infrastructure/data/prisma/user.datasource';
 import { CustomError } from '@/shared/utils/custom.error';
 import { reCAPTCHA } from '@/shared/utils/recaptcha';
 import { ChangePasswordUserUseCase } from '@/application/use-cases/user/change-password-user.use-case';
 import { logger } from '@/shared/utils/logger';
 
-const userRepo = new UserDatasource();
-
 export class AuthController {
-	async register(req: Request, res: Response) {
-		const registerUser = new RegisterUserUseCase(userRepo);
+        constructor(
+                private readonly registerUser: RegisterUserUseCase,
+                private readonly loginUser: LoginUserUseCase,
+                private readonly changePasswordUser: ChangePasswordUserUseCase
+        ) {}
+
+        async register(req: Request, res: Response) {
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta
 		//req.body es el cuerpo de la peticion y donde vienen los datos
@@ -27,8 +29,8 @@ export class AuthController {
 				}
 			}
 
-			//ejecutamos el caso de uso de registro de usuario
-			const user = await registerUser.create({ name, email, password });
+                        //ejecutamos el caso de uso de registro de usuario
+                        const user = await this.registerUser.create({ name, email, password });
 			logger.info(`Usuario registrado: ${user.id} - ${user.email}`);
 			res.status(201).json({
 				id: user.id,
@@ -45,8 +47,7 @@ export class AuthController {
 		}
 	}
 
-	async login(req: Request, res: Response) {
-		const loginUser = new LoginUserUseCase(userRepo);
+        async login(req: Request, res: Response) {
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta
 		//req.body es el cuerpo de la peticion y donde vienen los datos
@@ -61,8 +62,8 @@ export class AuthController {
 					throw CustomError.badRequest('Falló la verificación de reCAPTCHA');
 				}
 			}
-			//Se ejecuta el caso de login, donde se valida el usuario y se genera el token
-			const result = await loginUser.login({ email, password });
+                        //Se ejecuta el caso de login, donde se valida el usuario y se genera el token
+                        const result = await this.loginUser.login({ email, password });
 			logger.info(`Inicio sesion: ${result.user.id} - ${result.user.email}`);
 			res
 				//se configura la cookie con el token de una manera segura.
@@ -86,9 +87,8 @@ export class AuthController {
 		}
 	}
 
-	async changePassword(req: Request, res: Response) {
-		// console.log('Entro al Change password');
-		const changePasswordUser = new ChangePasswordUserUseCase(userRepo);
+        async changePassword(req: Request, res: Response) {
+                // console.log('Entro al Change password');
 		//req es el objeto que recibimos de la petición HTTP
 		//res es el objeto que vamos a devolver como respuesta
 		//req.body es el cuerpo de la peticion y donde vienen los datos
@@ -101,7 +101,7 @@ export class AuthController {
 				throw CustomError.badRequest('reCAPTCHA verification failed');
 			}
 
-			const result = await changePasswordUser.changePassword({ email, password, newPassword });
+                        const result = await this.changePasswordUser.changePassword({ email, password, newPassword });
 			// console.log('result', result);
 			logger.info(`Usuario actualizo su contraseña: ${result.user.id} - ${result.user.email}`);
 			res.status(200).json({

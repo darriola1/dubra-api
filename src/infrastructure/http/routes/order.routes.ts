@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { OrderController } from "../controllers/order.controller";
+import { orderController } from "@/app/container";
 
 const router = Router();
-const orderController = new OrderController();
 
 router.post("/", async (req, res, next) => {
     try {

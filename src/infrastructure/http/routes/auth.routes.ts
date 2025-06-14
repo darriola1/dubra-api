@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { AuthController } from '../controllers/auth.controller';
+import { authController } from '@/app/container';
 import { validateBody } from '../../../shared/middlewares/zod.middleware';
 import { RegisterUserSchema, LoginUserSchema, ChangePasswordSchema } from '../../../application/schemas/user.schema';
 
 const router = Router();
-const authController = new AuthController();
 
 // Route to register user with validation
 router.post('/register', validateBody(RegisterUserSchema), (req, res) => authController.register(req, res));

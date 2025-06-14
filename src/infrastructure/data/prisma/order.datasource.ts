@@ -1,38 +1,41 @@
-import { PrismaClient } from "../../../generated/prisma/client";  
-import { OrderRepository } from "@/domain/repositories/order.repository";
-import { CreateOrderDTO, UpdateOrderDTO } from "@/domain/dtos/order.dto";
+import { PrismaClient } from '../../../generated/prisma/client';
+import { OrderRepository } from '@/domain/repositories/order.repository';
+import { CreateOrderDTO, UpdateOrderDTO } from '@/domain/dtos/order.dto';
 
-const prisma = new PrismaClient();
-
+/**
+ * Datasource que recibe una instancia de Prisma para reutilizar la conexión.
+ */
 export class OrderDatasource implements OrderRepository {
+  constructor(private readonly prisma: PrismaClient) {}
+
   async create(data: CreateOrderDTO) {
-    return prisma.order.create({
+    return this.prisma.order.create({
       data,
     });
   }
 
   async findAll() {
-    return prisma.order.findMany({
+    return this.prisma.order.findMany({
       include: { usuario: true },
     });
   }
 
   async findById(id: number) {
-    return prisma.order.findUnique({
+    return this.prisma.order.findUnique({
       where: { id },
       include: { usuario: true },
     });
   }
 
   async update(id: number, data: UpdateOrderDTO) {
-    return prisma.order.update({
+    return this.prisma.order.update({
       where: { id },
       data,
     });
   }
 
   async delete(id: number) {
-    await prisma.order.delete({
+    await this.prisma.order.delete({
       where: { id },
     });
   }
