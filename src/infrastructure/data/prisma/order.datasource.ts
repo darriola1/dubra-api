@@ -13,14 +13,14 @@ export class OrderDatasource implements OrderRepository {
 
   async findAll() {
     return prisma.order.findMany({
-      include: { usuario: true },
+      include: { user: true },
     });
   }
 
   async findById(id: number) {
     return prisma.order.findUnique({
       where: { id },
-      include: { usuario: true },
+      include: { user: true },
     });
   }
 
