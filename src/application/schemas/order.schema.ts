@@ -1,20 +1,3 @@
-// import { z } from "zod";
-
-// export const orderschema = z.object({
-//   descripcion: z.string().min(1),
-//   pickupAddress: z.string().min(1),
-//   dropoffAddress: z.string().min(1),
-//   usuarioId: z.number().int(),
-//   status: z.enum(["pendiente", "en_camino", "entregado", "cancelado"]),
-// });
-
-// export const OrderUpdateSchema = orderschema.partial();
-
-// export type OrderInput = z.infer<typeof orderschema>;
-// export type OrderUpdateInput = z.infer<typeof OrderUpdateSchema>;
-
-// src/application/schemas/order.schema.ts
-// src/application/schemas/order.schema.ts
 import { z } from '../../docs/zod-openapi';
 
 export const CreateOrderSchema = z.object({
@@ -48,6 +31,6 @@ export const UpdateOrderSchema = CreateOrderSchema.partial().openapi({
 	description: 'Partial update for an order',
 });
 
-// Tipos inferidos que podés usar como DTOs
+// Tipos inferidos que usamos como DTOs
 export type CreateOrderDTO = z.infer<typeof CreateOrderSchema>;
 export type UpdateOrderDTO = z.infer<typeof UpdateOrderSchema>;

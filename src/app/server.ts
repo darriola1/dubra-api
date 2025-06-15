@@ -5,7 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 // imports de servicios
 import { logger } from '@/shared/utils/logger';
-import { errorHandler } from '@/shared/middlewares/error.middleware';
+import { errorHandler } from '../shared/middlewares/error.middleware';
 // imports de codigo
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 import userRoutes from '@/infrastructure/http/routes/user.routes';
