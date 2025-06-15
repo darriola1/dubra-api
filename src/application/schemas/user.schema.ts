@@ -1,7 +1,12 @@
-// src/application/schemas/user.schema.ts
 import { z } from '../../docs/zod-openapi';
+import { UserSchema as BaseUserSchema } from '@/generated/zod/modelSchema/UserSchema';
 
-export const RegisterUserSchema = z.object({
+// Registro de usuario
+export const RegisterUserSchema = BaseUserSchema.pick({
+	name: true,
+	email: true,
+	password: true,
+}).extend({
 	name: z
 		.string()
 		.min(3, 'Name is required, minimum 3 characters')
@@ -10,7 +15,9 @@ export const RegisterUserSchema = z.object({
 		})
 		.openapi({ example: 'Juan Pérez', description: 'User full name' }),
 
-	email: z.string().email('Invalid email address').openapi({ example: 'juan@example.com', description: 'Valid email address' }),
+	email: z
+		.string().email('Invalid email address')
+		.openapi({ example: 'juan@example.com', description: 'Valid email address' }),
 
 	password: z
 		.string()
@@ -20,16 +27,16 @@ export const RegisterUserSchema = z.object({
 		.refine((val) => /\d/.test(val), { message: 'Must contain at least one number' })
 		.refine((val) => /[\W_]/.test(val), { message: 'Must contain at least one symbol' })
 		.openapi({ example: 'StrongP@ss1', description: 'Secure password' }),
-
-	rut: z.string().min(12, 'RUT is required, minimum 12 characters').openapi({ example: '12.345.678-9', description: 'Chilean RUT' }),
 });
 
+// Login
 export const LoginUserSchema = z.object({
 	email: z.string().min(1, 'Email is required').email('Invalid email address').openapi({ example: 'juan@example.com', description: 'User email' }),
 
 	password: z.string().min(6, 'Password must be at least 6 characters long').openapi({ example: 'StrongP@ss1', description: 'User password' }),
 });
 
+// Cambio de contraseña
 export const ChangePasswordSchema = z.object({
 	password: z.string().min(6, 'Current password must be at least 6 characters long').openapi({ example: 'OldP@ss1', description: 'Current password' }),
 
