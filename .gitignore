@@ -11,4 +11,5 @@ dist/
 build/
 coverage/
 src/generated/prisma/
-*.log
+/prisma/zod
+logs/

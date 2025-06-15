@@ -5,6 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 // imports de servicios
 import { logger } from '@/shared/utils/logger';
+import { errorHandler } from '@/shared/middlewares/error.middleware';
 // imports de codigo
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 import userRoutes from '@/infrastructure/http/routes/user.routes';
@@ -36,11 +37,12 @@ app.get('/', (_req, res) => {
 	res.send(`🚀 Dubra API funcionando correctamente ${PORT}`);
 });
 
-// Ruta base para autenticación
+// Ruta base
 app.use('/auth', authRoutes);
-app.use('/api/users', userRoutes);
+app.use('/users', userRoutes);
 app.use('/orders', ordersRouter);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
+app.use(errorHandler);
 
 // Solo escuchá si no estás en test
 if (process.env.NODE_ENV !== 'test') {

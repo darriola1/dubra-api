@@ -10,8 +10,10 @@ const prisma = new PrismaClient();
  * y no afecta al resto de la aplicacion
  */
 export class UserDatasource implements UserRepository {
+	constructor(private readonly prisma: PrismaClient) {}
+
 	async create(data: CreateUserDTO): Promise<UserDTO> {
-		const user = await prisma.usuario.create({
+		const user = await this.prisma.user.create({
 			data,
 		});
 
@@ -20,13 +22,13 @@ export class UserDatasource implements UserRepository {
 
 	async findByEmail(email: string): Promise<UserDTO | null> {
 		// este return ya devuelve un usuario porque se basa en el dto
-		return await prisma.usuario.findUnique({
+		return await this.prisma.user.findUnique({
 			where: { email },
 		});
 	}
 
 	async changePassword(email: string, newPassword: string): Promise<UserDTO>{
-		return await prisma.usuario.update({
+		return await this.prisma.user.update({
 			where: { email },
 			data: {password: newPassword},
 		})

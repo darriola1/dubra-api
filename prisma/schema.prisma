@@ -8,6 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator zod {
+  provider         = "zod-prisma-types"
+  output           = "./zod/"
+  useMultipleFiles = true
+  createInputTypes = false
+  writeBarrelFiles = false
+}
+
 model Customer {
   id              Int      @id @default(autoincrement())
   nombre_fantasia String   @unique(map: "Empresa_nombre_fantasia_key")
