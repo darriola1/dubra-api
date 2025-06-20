@@ -17,13 +17,14 @@ generator zod {
 }
 
 model Customer {
-  id              Int      @id @default(autoincrement())
-  nombre_fantasia String   @unique(map: "Empresa_nombre_fantasia_key")
-  razon_social    String   @unique(map: "Empresa_razon_social_key")
-  RUT             String   @unique(map: "Empresa_RUT_key")
-  createdAt       DateTime @default(now())
+  id              Int       @id @default(autoincrement())
+  nombre_fantasia String    @unique(map: "Empresa_nombre_fantasia_key")
+  razon_social    String    @unique(map: "Empresa_razon_social_key")
+  RUT             String    @unique(map: "Empresa_RUT_key")
+  createdAt       DateTime  @default(now())
   updatedAt       DateTime
   users           User[]
+  Invoice         Invoice[]
 }
 
 model User {
@@ -82,4 +83,14 @@ enum ShippingStatus {
   en_camino
   entregado
   cancelado
+}
+
+model Invoice {
+  id         Int      @id @default(autoincrement())
+  number     String
+  fileBase64 String
+  createdAt  DateTime @default(now())
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId Int
 }
