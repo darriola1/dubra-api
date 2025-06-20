@@ -47,7 +47,7 @@ model Order {
   userId                Int
   user                  User                    @relation(fields: [userId], references: [id], map: "Order_usuarioId_fkey")
   createdAt             DateTime                @default(now())
-  updatedAt             DateTime
+  updatedAt             DateTime                @updatedAt
   shippings             Shipping[]
   ShippingStatusHistory ShippingStatusHistory[]
 
@@ -64,7 +64,7 @@ model Shipping {
   contactPhone String?
   trackingId   String         @unique
   carrier      String
-  status       ShippingStatus
+  status       ShippingStatus @default(pendiente)
   sequence     Int
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt

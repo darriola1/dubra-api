@@ -1,9 +1,9 @@
-import { OrderRepository } from "../../../domain/repositories/order.repository";
+import { IOrderRepository } from '../../../domain/repositories/order.repository';
 
 export class FindAllOrdersUseCase {
-  constructor(private readonly orderRepo: OrderRepository) {}
+	constructor(private readonly orderRepo: IOrderRepository) {}
 
-  async findAll() {
-    return this.orderRepo.findAll();
-  }
+	async findAll() {
+		return this.orderRepo.findAll();
+	}
 }

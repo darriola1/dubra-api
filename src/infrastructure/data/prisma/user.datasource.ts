@@ -1,18 +1,16 @@
 import { PrismaClient } from '@/generated/prisma/client';
-import { UserRepository } from '@/domain/repositories/user.repository';
-import { CreateUserDTO, UserDTO } from '@/domain/dtos/user.dto';
-
-const prisma = new PrismaClient();
+import { IUserRepository } from '@/domain/repositories/user.repository';
+import { RegisterDTO, UserDTO } from '@/application/schemas/user.schema';
 
 /**
  * Implementación concreta del repositorio usando Prisma como ORM.
  * si algun dia cambiamos de ORM, solo tenemos que cambiar esta clase
  * y no afecta al resto de la aplicacion
  */
-export class UserDatasource implements UserRepository {
+export class UserDatasource implements IUserRepository {
 	constructor(private readonly prisma: PrismaClient) {}
 
-	async create(data: CreateUserDTO): Promise<UserDTO> {
+	async create(data: RegisterDTO): Promise<UserDTO> {
 		const user = await this.prisma.user.create({
 			data,
 		});
@@ -27,10 +25,10 @@ export class UserDatasource implements UserRepository {
 		});
 	}
 
-	async changePassword(email: string, newPassword: string): Promise<UserDTO>{
+	async changePassword(email: string, newPassword: string): Promise<UserDTO> {
 		return await this.prisma.user.update({
 			where: { email },
-			data: {password: newPassword},
-		})
+			data: { password: newPassword },
+		});
 	}
 }

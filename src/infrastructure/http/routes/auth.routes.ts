@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import { authController } from '@/app/container';
 import { validateBody } from '@/shared/middlewares/zod.middleware';
-import { RegisterUserSchema, LoginUserSchema, ChangePasswordSchema } from '@/application/schemas/user.schema';
+import { RegisterSchema, LoginSchema, ChangePasswordSchema } from '@/application/schemas/user.schema';
 import { authLimiter } from '@/shared/middlewares/rateLimiter.js';
 
 const router = Router();
 
 // Route to register user with validation
-router.post('/register', authLimiter, validateBody(RegisterUserSchema), (req, res) => authController.register(req, res));
+router.post('/register', authLimiter, validateBody(RegisterSchema), (req, res) => authController.register(req, res));
 // Route to login with validation
-router.post('/login', authLimiter, validateBody(LoginUserSchema), (req, res) => authController.login(req, res));
+router.post('/login', authLimiter, validateBody(LoginSchema), (req, res) => authController.login(req, res));
 // Route to change password with validation
 router.post('/change-password', validateBody(ChangePasswordSchema), (req, res) => authController.changePassword(req, res));
 // Route to logout

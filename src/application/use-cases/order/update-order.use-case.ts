@@ -1,10 +1,10 @@
-import { OrderRepository } from "../../../domain/repositories/order.repository";
-import { UpdateOrderDTO } from "../../../domain/dtos/order.dto";
+import { IOrderRepository } from '../../../domain/repositories/order.repository';
+import { UpdateOrderDTO } from '../../../domain/dtos-unused/order.dto';
 
 export class UpdateOrderUseCase {
-  constructor(private readonly orderRepo: OrderRepository) {}
+	constructor(private readonly orderRepo: IOrderRepository) {}
 
-  async update(id: number, data: UpdateOrderDTO) {
-    return this.orderRepo.update(id, data);
-  }
+	async update(id: number, data: UpdateOrderDTO) {
+		return this.orderRepo.update(id, data);
+	}
 }

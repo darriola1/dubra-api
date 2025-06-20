@@ -1,6 +1,6 @@
 import { ChangePasswordUserUseCase } from '@/application/use-cases/user/change-password-user.use-case';
-import { UserRepository } from '@/domain/repositories/user.repository';
-import { UserDTO } from '@/domain/dtos/user.dto';
+import { IUserRepository } from '@/domain/repositories/user.repository';
+import { UserDTO } from '@/domain/dtos-unused/user.dto';
 import { comparePassword, hashPassword } from '@/shared/utils/hash';
 
 jest.mock('@/shared/utils/hash');
@@ -15,7 +15,7 @@ const mockUser: UserDTO = {
 };
 
 describe('ChangePasswordUserUseCase', () => {
-	const userRepoMock: jest.Mocked<UserRepository> = {
+	const userRepoMock: jest.Mocked<IUserRepository> = {
 		create: jest.fn(),
 		findByEmail: jest.fn(),
 		changePassword: jest.fn(),

@@ -1,10 +1,10 @@
-import { ChangePasswordDTO, UserDTO } from '@/domain/dtos/user.dto';
-import { UserRepository } from '@/domain/repositories/user.repository';
+import { ChangePasswordDTO, UserDTO } from '@/application/schemas/user.schema';
+import { IUserRepository } from '@/domain/repositories/user.repository';
 import { CustomError } from '@/shared/utils/custom.error';
 import { comparePassword, hashPassword } from '@/shared/utils/hash';
 
 export class ChangePasswordUserUseCase {
-	constructor(private readonly userRepo: UserRepository) {}
+	constructor(private readonly userRepo: IUserRepository) {}
 
 	async changePassword({ email, password, newPassword }: ChangePasswordDTO) {
 		const user = await this.userRepo.findByEmail(email);
