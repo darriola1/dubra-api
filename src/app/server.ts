@@ -12,6 +12,7 @@ import { httpLogger } from '@/shared/middlewares/http-logger.middleware';
 import authRoutes from '@/infrastructure/http/routes/auth.routes';
 import userRoutes from '@/infrastructure/http/routes/user.routes';
 import ordersRouter from '@/infrastructure/http/routes/order.routes';
+import geocoderRouter from '@/infrastructure/http/routes/geocoder.routes';
 
 import swaggerUi from 'swagger-ui-express';
 import { openApiDocument } from '../docs/openapi';
@@ -46,6 +47,7 @@ app.use(httpLogger);
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/orders', ordersRouter);
+app.use('/geocoder', geocoderRouter)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 app.use(errorHandler);
 

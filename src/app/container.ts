@@ -11,6 +11,7 @@ import { UpdateOrderUseCase } from '@/application/use-cases/order/update-order.u
 import { DeleteOrderUseCase } from '@/application/use-cases/order/delete-order.use-case';
 import { AuthController } from '@/infrastructure/http/controllers/auth.controller';
 import { OrderController } from '@/infrastructure/http/controllers/order.controller';
+import { GeocoderController } from '@/infrastructure/http/controllers/gecoder.controller';
 
 // Prisma singleton
 const prisma = new PrismaClient();
@@ -33,6 +34,7 @@ const deleteOrder = new DeleteOrderUseCase(orderDatasource);
 // Controllers
 export const authController = new AuthController(registerUser, loginUser, changePasswordUser);
 export const orderController = new OrderController(createOrder, findAllOrders, findOrderById, updateOrder, deleteOrder);
+export const geocoderController = new GeocoderController();
 
 export const container = {
 	prisma,
@@ -48,4 +50,5 @@ export const container = {
 	deleteOrder,
 	authController,
 	orderController,
+	geocoderController
 };

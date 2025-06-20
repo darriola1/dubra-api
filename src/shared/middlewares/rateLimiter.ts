@@ -9,3 +9,13 @@ export const authLimiter = rateLimit({
     error: 'Demasiados intentos. Por favor, inténtalo de nuevo más tarde.'
   }
 });
+
+export const geoCoderLimiter = rateLimit({
+  windowMs: 1000,
+  max: 1,
+  standardHeaders: false, 
+  legacyHeaders: false, 
+  message: {
+    error: 'Espere 1 segundo antes de realizar un nuevo intento.'
+  }
+});

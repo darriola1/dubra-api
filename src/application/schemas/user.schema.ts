@@ -49,4 +49,4 @@ export const ChangePasswordSchema = z.object({
 // Tipos inferidos que usamos como DTOs
 export type CreateUserDTO = z.infer<typeof RegisterUserSchema>;
 export type LoginUserDTO = z.infer<typeof LoginUserSchema>;
-export type ChanPasswordUserDTO = z.infer<typeof ChangePasswordSchema>;
+export type ChangePasswordUserDTO = z.infer<typeof ChangePasswordSchema>;
